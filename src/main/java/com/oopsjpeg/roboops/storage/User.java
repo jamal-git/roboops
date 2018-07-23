@@ -30,6 +30,10 @@ public class User {
 		return user.getName();
 	}
 
+	public String getDiscriminator() {
+		return user.getDiscriminator();
+	}
+
 	public long getID() {
 		return user.getLongID();
 	}

@@ -112,6 +112,7 @@ public class Roboops {
 		commands.add(new DailyCommand());
 		commands.add(new DescCommand());
 		commands.add(new GambleCommand());
+		commands.add(new LeaderboardCommand());
 		commands.add(new ProfileCommand());
 	}
 
