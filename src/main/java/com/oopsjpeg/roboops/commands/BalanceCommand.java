@@ -3,7 +3,7 @@ package com.oopsjpeg.roboops.commands;
 import com.oopsjpeg.roboops.Roboops;
 import com.oopsjpeg.roboops.commands.util.Command;
 import com.oopsjpeg.roboops.storage.User;
-import com.oopsjpeg.roboops.util.Emoji;
+import com.oopsjpeg.roboops.util.Emote;
 import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -16,7 +16,7 @@ public class BalanceCommand implements Command {
 		IUser author = message.getAuthor();
 		User info = Roboops.getUser(author);
 
-		Util.sendMessage(channel, Emoji.MONEY + "**" + author.getName() + "**, "
+		Util.sendMessage(channel, Emote.MONEY + "**" + author.getName() + "**, "
 				+ "you have **$" + Util.comma(info.getMoney()) + "**.");
 	}
 

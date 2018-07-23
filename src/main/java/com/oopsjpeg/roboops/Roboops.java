@@ -4,7 +4,7 @@ import com.oopsjpeg.roboops.commands.*;
 import com.oopsjpeg.roboops.commands.util.Command;
 import com.oopsjpeg.roboops.commands.util.CommandLevel;
 import com.oopsjpeg.roboops.storage.User;
-import com.oopsjpeg.roboops.util.Emoji;
+import com.oopsjpeg.roboops.util.Emote;
 import com.oopsjpeg.roboops.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +21,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -32,13 +29,13 @@ public class Roboops {
 	public static final Logger LOGGER = LoggerFactory.getLogger(Roboops.class.getName());
 	public static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(2);
 
+	private static final List<Command> commands = new ArrayList<>();
+	private static final List<User> users = new ArrayList<>();
+
 	private static String token;
 	private static String prefix;
 	private static MongoMaster mongo;
 	private static IDiscordClient client;
-
-	private static List<Command> commands = new LinkedList<>();
-	private static List<User> users = new LinkedList<>();
 
 	public static void main(String[] args) {
 		if (loadConfig()) {
@@ -150,10 +147,10 @@ public class Roboops {
 
 				if (command != null) {
 					if (CommandLevel.get(author) < command.getLevel())
-						Util.sendMessage(channel, Emoji.ERROR + author + ", "
+						Util.sendMessage(channel, Emote.ERROR + author + ", "
 								+ "you are not a high enough permission level for that command.");
 					else if (!channel.getModifiedPermissions(author).containsAll(command.getPermissions()))
-						Util.sendMessage(channel, Emoji.ERROR + author + ", "
+						Util.sendMessage(channel, Emote.ERROR + author + ", "
 								+ "you do not have permission(s) for that command.");
 					else {
 						System.out.println(author.getName() + "#" + author.getDiscriminator() + ": " + content);

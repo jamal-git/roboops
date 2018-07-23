@@ -23,7 +23,7 @@ public class Leaderboard {
 		}
 
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.appendField(Emoji.STAR2 + modeName(mode) + " (" + scope + ")",
+		builder.appendField(Emote.STAR2 + modeName(mode) + " (" + scope + ")",
 				String.join("\n", board), false);
 
 		return builder.build();

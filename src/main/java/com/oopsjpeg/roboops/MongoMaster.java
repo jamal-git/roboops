@@ -12,14 +12,14 @@ import sx.blah.discord.handle.obj.IUser;
 import java.time.LocalDateTime;
 
 public class MongoMaster extends MongoClient {
-	private MongoDatabase database = getDatabase("roboops");
-	private MongoCollection users = database.getCollection("users");
+	private final MongoDatabase database = getDatabase("roboops");
+	private final MongoCollection<Document> users = database.getCollection("users");
 
 	public void loadUsers() {
 		Roboops.LOGGER.info("Loading user documents...");
 
 		// Unpack the users into the list
-		for (Document d : (Iterable<Document>) users.find()) {
+		for (Document d : users.find()) {
 			User u = inUser(d);
 			if (u != null) Roboops.getUsers().add(inUser(d));
 		}
@@ -32,8 +32,8 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public void loadUser(IUser u) {
-		Document d = (Document) Filters.eq("_id", u.getLongID());
-		if (d != null) Roboops.getUsers().add(inUser(d));
+		Document d = (Document) Filters.eq(u.getLongID());
+		Roboops.getUsers().add(inUser(d));
 	}
 
 	public void saveUsers() {
@@ -43,7 +43,7 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public void saveUser(User u) {
-		users.replaceOne(Filters.eq("_id", u.getID()), outUser(u), new ReplaceOptions().upsert(true));
+		users.replaceOne(Filters.eq(u.getID()), outUser(u), new ReplaceOptions().upsert(true));
 	}
 
 	public void saveUser(IUser u) {
