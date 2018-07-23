@@ -41,7 +41,7 @@ public class CleanCommand implements Command {
 			channel.bulkDelete(messages);
 
 			Util.sendMessage(channel, Emoji.SUCCESS + "**" + author.getName() + "** "
-					+ "cleared **" + messages.size() + "** message(s).");
+					+ "cleared **" + Util.comma(messages.size()) + "** message(s).");
 		}
 	}
 

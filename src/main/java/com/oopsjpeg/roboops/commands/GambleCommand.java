@@ -31,32 +31,32 @@ public class GambleCommand implements Command {
 						+ "the gamble must be higher than 0.");
 			else if (info.getMoney() < amount)
 				Util.sendMessage(channel, Emoji.ERROR + "**" + author.getName() + "**, "
-						+ "you do not have **$" + amount + "**.");
+						+ "you do not have **$" + Util.comma(amount) + "**.");
 			else {
 				info.setGambling(true);
 				IMessage gamble = Util.sendMessage(channel, Emoji.DICE + "**" + author.getName() + "** "
-						+ "is gambling **$" + amount + "**...!");
+						+ "is gambling **$" + Util.comma(amount) + "**...!");
 				Roboops.SCHEDULER.schedule(() -> {
 					int roll = Util.randInt(100);
 					if (roll == 0)
 						Util.editMessage(gamble, Emoji.DICE + "**" + author.getName() + "** "
-								+ "rolled a **" + roll + "** and kept their **$" + amount + "**.");
+								+ "rolled a **" + roll + "** and kept their **$" + Util.comma(amount) + "**.");
 					else if (roll < 55) {
 						info.subMoney(amount);
 						Util.editMessage(gamble, Emoji.DICE + "**" + author.getName() + "** "
-								+ "rolled a **" + roll + "** and lost their **$" + amount + "**.");
+								+ "rolled a **" + roll + "** and lost their **$" + Util.comma(amount) + "**.");
 						Roboops.getMongo().saveUser(author);
 					} else if (roll < 96) {
 						info.addMoney(amount * 2);
 						Util.editMessage(gamble, Emoji.DICE + "**" + author.getName() + "** "
-								+ "rolled a **" + roll + "** and earned **x2** their **$" + amount + "**, "
-								+ "equaling **$" + (amount * 2) + "**.");
+								+ "rolled a **" + roll + "** and earned **x2** their **$" + Util.comma(amount) + "**, "
+								+ "equaling **$" + Util.comma(amount * 2) + "**.");
 						Roboops.getMongo().saveUser(author);
 					} else {
 						info.addMoney(amount * 3);
 						Util.editMessage(gamble, Emoji.DICE + "**" + author.getName() + "** "
-								+ "rolled a **" + roll + "** and earned **x3** their **$" + amount + "**, "
-								+ "equaling **$" + (amount * 3) + "**.");
+								+ "rolled a **" + roll + "** and earned **x3** their **$" + Util.comma(amount) + "**, "
+								+ "equaling **$" + Util.comma(amount * 3) + "**.");
 						Roboops.getMongo().saveUser(author);
 					}
 					info.setGambling(false);

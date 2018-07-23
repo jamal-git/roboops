@@ -24,7 +24,7 @@ public class DailyCommand implements Command {
 			info.addMoney(daily);
 			Roboops.getMongo().saveUser(author);
 			Util.sendMessage(channel, Emoji.SUCCESS + "**" + author.getName() + "** "
-					+ "has collected **$" + daily + "** from their daily bonus!");
+					+ "has collected **$" + Util.comma(daily) + "** from their daily bonus!");
 		}
 
 	}

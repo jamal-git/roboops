@@ -11,6 +11,7 @@ import sx.blah.discord.util.RequestBuffer;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -47,7 +48,7 @@ public class Util {
 		if (guild != null) builder.withColor(Util.getColor(user.getUser(), guild));
 		else builder.withColor(Color.LIGHT_GRAY);
 
-		builder.appendField("Most Money", "$" + user.getMostMoney(), true);
+		builder.appendField("Most Money", "$" + Util.comma(user.getMostMoney()), true);
 
 		return builder.build();
 	}
@@ -70,6 +71,10 @@ public class Util {
 		long minutes = ldt1.until(ldt2, ChronoUnit.MINUTES);
 
 		return (hours > 0 ? hours + "h " : "") + minutes + "m";
+	}
+
+	public static String comma(int x) {
+		return new DecimalFormat("#,###").format(x);
 	}
 
 	public static IUser findUser(String[] args) {

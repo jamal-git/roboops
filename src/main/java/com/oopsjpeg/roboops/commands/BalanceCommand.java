@@ -17,7 +17,7 @@ public class BalanceCommand implements Command {
 		User info = Roboops.getUser(author);
 
 		Util.sendMessage(channel, Emoji.MONEY + "**" + author.getName() + "**, "
-				+ "you have **$" + info.getMoney() + "**.");
+				+ "you have **$" + Util.comma(info.getMoney()) + "**.");
 	}
 
 	@Override
