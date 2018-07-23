@@ -22,7 +22,7 @@ public class Leaderboard {
 		}
 
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.appendField("Leaderboard - " + modeName(mode) + " (Global)",
+		builder.appendField(Emoji.STAR2 + "" + modeName(mode) + " (Global)",
 				String.join("\n", board), false);
 
 		return builder.build();
@@ -35,13 +35,14 @@ public class Leaderboard {
 	}
 
 	public static List<String> mostMoney(List<User> users) {
-		AtomicInteger position = new AtomicInteger();
+		AtomicInteger position = new AtomicInteger(10);
 		List<String> board = users.stream()
 				.sorted(Comparator.comparingInt(User::getMostMoney)).limit(10)
-				.map(u -> "(**#" + position.incrementAndGet() + "**) " + u.getName() + "#"
+				.map(u -> "**#" + position.getAndDecrement() + "** - " + u.getName() + "#"
 						+ u.getDiscriminator() + " with **$" + Util.comma(u.getMostMoney()) + "**")
 				.collect(Collectors.toList());
 		Collections.reverse(board);
+
 		return board;
 	}
 }
