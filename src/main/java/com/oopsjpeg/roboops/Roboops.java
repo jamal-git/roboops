@@ -3,6 +3,7 @@ package com.oopsjpeg.roboops;
 import com.oopsjpeg.roboops.commands.*;
 import com.oopsjpeg.roboops.commands.util.Command;
 import com.oopsjpeg.roboops.commands.util.CommandLevel;
+import com.oopsjpeg.roboops.storage.Guild;
 import com.oopsjpeg.roboops.storage.User;
 import com.oopsjpeg.roboops.util.Emote;
 import com.oopsjpeg.roboops.util.Util;
@@ -14,6 +15,7 @@ import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
@@ -34,6 +36,7 @@ public class Roboops {
 
 	private static final List<Command> commands = new ArrayList<>();
 	private static final List<User> users = new ArrayList<>();
+	private static final List<Guild> guilds = new ArrayList<>();
 
 	private static String token;
 	private static String prefix;
@@ -129,6 +132,18 @@ public class Roboops {
 			User u = new User(user);
 			users.add(u);
 			return u;
+		});
+	}
+
+	public static List<Guild> getGuilds() {
+		return guilds;
+	}
+
+	public static Guild getGuild(IGuild guild) {
+		return guilds.stream().filter(u -> u.equals(guild)).findAny().orElseGet(() -> {
+			Guild g = new Guild(guild);
+			guilds.add(g);
+			return g;
 		});
 	}
 
