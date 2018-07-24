@@ -13,9 +13,9 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class MongoMaster extends MongoClient {
 	private final MongoDatabase database = getDatabase("roboops");
@@ -32,7 +32,8 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public void loadUser(IUser u) {
-		Document d = (Document) Filters.eq(u.getLongID());
+		Document d = users.find(Filters.eq(u.getLongID())).first();
+		Roboops.getUsers().remove(u);
 		Roboops.getUsers().add(inUser(d));
 	}
 
@@ -50,7 +51,8 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public void loadGuild(IGuild g) {
-		Document d = (Document) Filters.eq(g.getLongID());
+		Document d = guilds.find(Filters.eq(g.getLongID())).first();
+		Roboops.getGuilds().remove(g);
 		Roboops.getGuilds().add(inGuild(d));
 	}
 
@@ -89,13 +91,13 @@ public class MongoMaster extends MongoClient {
 	public User inUser(Document d) {
 		User u = new User(Roboops.getClient().getUserByID(d.getLong("_id")));
 		if (d.containsKey("desc"))
-			u.setDesc((String) d.getOrDefault("desc", ""));
+			u.setDesc(d.get("desc", ""));
 		if (d.containsKey("money"))
-			u.setMoney((int) d.getOrDefault("money", 0));
+			u.setMoney(d.get("money", 0));
 		if (d.containsKey("most_money"))
-			u.setMostMoney((int) d.getOrDefault("most_money", 0));
+			u.setMostMoney(d.get("most_money", 0));
 		if (d.containsKey("last_daily"))
-			u.setLastDaily(LocalDateTime.parse((String) d.getOrDefault("last_daily", "")));
+			u.setLastDaily(LocalDateTime.parse(d.get("last_daily", "")));
 		return u;
 	}
 
@@ -113,11 +115,10 @@ public class MongoMaster extends MongoClient {
 	public Guild inGuild(Document d) {
 		Guild g = new Guild(Roboops.getClient().getGuildByID(d.getLong("_id")));
 		if (d.containsKey("blacklist_channels")) {
-			long[] ids = (long[]) d.getOrDefault("blacklist_channels", new long[0]);
-			if (ids.length > 0)
-				g.setBlacklistChannels(StreamSupport.stream(Arrays.spliterator(ids), false)
-						.map(i -> Roboops.getClient().getChannelByID(i))
-						.collect(Collectors.toList()));
+			List<Long> ids = d.get("blacklist_channels", new ArrayList<>());
+			g.setBlacklistChannels(ids.stream()
+					.map(id -> Roboops.getClient().getChannelByID(id))
+					.collect(Collectors.toList()));
 		}
 		return g;
 	}
@@ -125,8 +126,7 @@ public class MongoMaster extends MongoClient {
 	public Document outGuild(Guild g) {
 		Document d = new Document("_id", g.getID());
 		d.append("blacklist_channels", g.getBlacklistChannels().stream()
-				.map(IChannel::getLongID)
-				.toArray(Long[]::new));
+				.map(IChannel::getLongID).collect(Collectors.toList()));
 		return d;
 	}
 

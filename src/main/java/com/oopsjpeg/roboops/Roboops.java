@@ -128,11 +128,9 @@ public class Roboops {
 	}
 
 	public static User getUser(IUser user) {
-		return users.stream().filter(u -> u.equals(user)).findAny().orElseGet(() -> {
-			User u = new User(user);
-			users.add(u);
-			return u;
-		});
+		if (!users.contains(user))
+			users.add(new User(user));
+		return users.get(users.indexOf(user));
 	}
 
 	public static List<Guild> getGuilds() {
@@ -140,11 +138,9 @@ public class Roboops {
 	}
 
 	public static Guild getGuild(IGuild guild) {
-		return guilds.stream().filter(u -> u.equals(guild)).findAny().orElseGet(() -> {
-			Guild g = new Guild(guild);
-			guilds.add(g);
-			return g;
-		});
+		if (!guilds.contains(guild))
+			guilds.add(new Guild(guild));
+		return guilds.get(guilds.indexOf(guild));
 	}
 
 	@EventSubscriber

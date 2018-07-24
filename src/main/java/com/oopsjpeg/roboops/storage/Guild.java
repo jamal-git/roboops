@@ -32,6 +32,11 @@ public class Guild {
 	}
 
 	@Override
+	public int hashCode() {
+		return guild.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		return guild.equals(obj);
 	}
@@ -40,4 +45,6 @@ public class Guild {
 	public String toString() {
 		return guild.toString();
 	}
+
+
 }

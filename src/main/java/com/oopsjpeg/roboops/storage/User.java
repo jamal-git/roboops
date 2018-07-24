@@ -115,6 +115,11 @@ public class User {
 	}
 
 	@Override
+	public int hashCode() {
+		return user.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		return user.equals(obj);
 	}
