@@ -35,8 +35,8 @@ public class CleanCommand implements Command {
 			// Remove if message starts with prefix (if allowed)
 			if (channel.getModifiedPermissions(bot).contains(Permissions.MANAGE_MESSAGES))
 				messages.addAll(history.stream()
-					.filter(m -> m.getContent().startsWith(Roboops.getPrefix()))
-					.collect(Collectors.toList()));
+						.filter(m -> m.getContent().startsWith(Roboops.getPrefix()))
+						.collect(Collectors.toList()));
 			// Delete the collected messages
 			channel.bulkDelete(messages);
 

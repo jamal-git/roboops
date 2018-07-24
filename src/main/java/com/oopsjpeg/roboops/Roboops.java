@@ -21,7 +21,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -51,17 +54,21 @@ public class Roboops {
 		File file = new File("config.ini");
 		Properties properties = new Properties();
 		try {
-			// Create the config file if it doesn't exist
-			if (file.createNewFile()) try (FileWriter fw = new FileWriter(file)) {
-				properties.setProperty("token", "");
-				properties.setProperty("prefix", "r.");
-				properties.store(fw, "roboops configuration");
-			// Load properties file
-			} else try (FileReader fr = new FileReader(file)) {
-				properties.load(fr);
-				token = properties.getProperty("token", "");
-				prefix = properties.getProperty("prefix", "r.");
-				return true;
+			if (!file.exists()) {
+				try (FileWriter fw = new FileWriter(file)) {
+					// Create the config file if it doesn't exist
+					properties.setProperty("token", "");
+					properties.setProperty("prefix", "r.");
+					properties.store(fw, "roboops configuration");
+				}
+			} else {
+				try (FileReader fr = new FileReader(file)) {
+					// Load properties file
+					properties.load(fr);
+					token = properties.getProperty("token", "");
+					prefix = properties.getProperty("prefix", "r.");
+					return true;
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
