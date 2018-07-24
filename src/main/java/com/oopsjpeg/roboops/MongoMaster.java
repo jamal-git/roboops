@@ -8,10 +8,14 @@ import com.mongodb.client.model.ReplaceOptions;
 import com.oopsjpeg.roboops.storage.Guild;
 import com.oopsjpeg.roboops.storage.User;
 import org.bson.Document;
+import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class MongoMaster extends MongoClient {
 	private final MongoDatabase database = getDatabase("roboops");
@@ -32,6 +36,10 @@ public class MongoMaster extends MongoClient {
 		Roboops.getUsers().add(inUser(d));
 	}
 
+	public void loadUser(User u) {
+		loadUser(u.getUser());
+	}
+
 	public void loadGuilds() {
 		Roboops.LOGGER.info("Loading guild documents...");
 		for (Document d : guilds.find()) {
@@ -46,6 +54,10 @@ public class MongoMaster extends MongoClient {
 		Roboops.getGuilds().add(inGuild(d));
 	}
 
+	public void loadGuild(Guild g) {
+		loadGuild(g.getGuild());
+	}
+
 	public void saveUsers() {
 		Roboops.LOGGER.info("Saving user documents...");
 		for (User u : Roboops.getUsers()) saveUser(u);
@@ -56,6 +68,10 @@ public class MongoMaster extends MongoClient {
 		users.replaceOne(Filters.eq(u.getID()), outUser(u), new ReplaceOptions().upsert(true));
 	}
 
+	public void saveUser(IUser u) {
+		saveUser(Roboops.getUser(u));
+	}
+
 	public void saveGuilds() {
 		Roboops.LOGGER.info("Saving guild documents...");
 		for (Guild g : Roboops.getGuilds()) saveGuild(g);
@@ -64,6 +80,10 @@ public class MongoMaster extends MongoClient {
 
 	public void saveGuild(Guild g) {
 		guilds.replaceOne(Filters.eq(g.getID()), outGuild(g), new ReplaceOptions().upsert(true));
+	}
+
+	public void saveGuild(IGuild g) {
+		saveGuild(Roboops.getGuild(g));
 	}
 
 	public User inUser(Document d) {
@@ -92,11 +112,21 @@ public class MongoMaster extends MongoClient {
 
 	public Guild inGuild(Document d) {
 		Guild g = new Guild(Roboops.getClient().getGuildByID(d.getLong("_id")));
+		if (d.containsKey("blacklist_channels")) {
+			long[] ids = (long[]) d.getOrDefault("blacklist_channels", new long[0]);
+			if (ids.length > 0)
+				g.setBlacklistChannels(StreamSupport.stream(Arrays.spliterator(ids), false)
+						.map(i -> Roboops.getClient().getChannelByID(i))
+						.collect(Collectors.toList()));
+		}
 		return g;
 	}
 
 	public Document outGuild(Guild g) {
 		Document d = new Document("_id", g.getID());
+		d.append("blacklist_channels", g.getBlacklistChannels().stream()
+				.map(IChannel::getLongID)
+				.toArray(Long[]::new));
 		return d;
 	}
 
