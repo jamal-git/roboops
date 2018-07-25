@@ -1,22 +1,16 @@
 package com.oopsjpeg.roboops;
 
 import com.oopsjpeg.roboops.commands.*;
-import com.oopsjpeg.roboops.commands.util.Command;
-import com.oopsjpeg.roboops.commands.util.CommandLevel;
+import com.oopsjpeg.roboops.framework.commands.CommandCenter;
 import com.oopsjpeg.roboops.storage.Guild;
 import com.oopsjpeg.roboops.storage.User;
-import com.oopsjpeg.roboops.util.Emote;
-import com.oopsjpeg.roboops.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
-import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
-import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.io.File;
@@ -24,7 +18,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,7 +27,7 @@ public class Roboops {
 	public static final Logger LOGGER = LoggerFactory.getLogger(Roboops.class.getName());
 	public static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(2);
 
-	private static final List<Command> commands = new ArrayList<>();
+	private static final CommandCenter commands = new CommandCenter();
 	private static final List<User> users = new ArrayList<>();
 	private static final List<Guild> guilds = new ArrayList<>();
 
@@ -47,7 +40,7 @@ public class Roboops {
 		if (loadConfig()) {
 			openMongo();
 			client = new ClientBuilder().withToken(token).build();
-			client.getDispatcher().registerListener(new Roboops());
+			client.getDispatcher().registerListener(commands);
 			client.login();
 		}
 	}
@@ -101,17 +94,6 @@ public class Roboops {
 		return client;
 	}
 
-	public static List<Command> getCommands() {
-		return commands;
-	}
-
-	public static Command getCommand(String alias) {
-		return commands.stream()
-				.filter(c -> c.getName().equalsIgnoreCase(alias) || Arrays.stream(c.getAliases())
-						.anyMatch(s -> s.equalsIgnoreCase(alias)))
-				.findAny().orElse(null);
-	}
-
 	public static void buildCommands() {
 		commands.clear();
 		commands.add(new BalanceCommand());
@@ -147,36 +129,5 @@ public class Roboops {
 	public void onReady(ReadyEvent e) {
 		mongo.loadUsers();
 		buildCommands();
-	}
-
-	@EventSubscriber
-	public void onMessage(MessageReceivedEvent e) {
-		IMessage message = e.getMessage();
-		IUser author = e.getAuthor();
-
-		if (!author.isBot()) {
-			IChannel channel = e.getChannel();
-			String content = message.getContent();
-
-			if (content.startsWith(prefix)) {
-				String[] split = content.split(" ");
-				String alias = split[0].replaceFirst(prefix, "");
-				Command command = Roboops.getCommand(alias);
-
-				if (command != null) {
-					if (CommandLevel.get(author) < command.getLevel())
-						Util.sendMessage(channel, Emote.ERROR + author + ", "
-								+ "you are not a high enough permission level for that command.");
-					else if (!channel.getModifiedPermissions(author).containsAll(command.getPermissions()))
-						Util.sendMessage(channel, Emote.ERROR + author + ", "
-								+ "you do not have permission(s) for that command.");
-					else {
-						System.out.println(author.getName() + "#" + author.getDiscriminator() + ": " + content);
-						String[] args = Arrays.copyOfRange(split, 1, split.length);
-						command.execute(message, alias, args);
-					}
-				}
-			}
-		}
 	}
 }

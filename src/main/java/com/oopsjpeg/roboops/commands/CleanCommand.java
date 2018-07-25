@@ -1,8 +1,8 @@
 package com.oopsjpeg.roboops.commands;
 
 import com.oopsjpeg.roboops.Roboops;
-import com.oopsjpeg.roboops.commands.util.Command;
-import com.oopsjpeg.roboops.util.Emote;
+import com.oopsjpeg.roboops.framework.Emote;
+import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;

@@ -1,6 +1,7 @@
 package com.oopsjpeg.roboops.util;
 
 import com.oopsjpeg.roboops.Roboops;
+import com.oopsjpeg.roboops.framework.Emote;
 import com.oopsjpeg.roboops.storage.User;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IGuild;

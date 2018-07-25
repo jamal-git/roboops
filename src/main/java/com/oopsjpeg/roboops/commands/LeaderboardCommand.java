@@ -1,6 +1,6 @@
 package com.oopsjpeg.roboops.commands;
 
-import com.oopsjpeg.roboops.commands.util.Command;
+import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.util.Leaderboard;
 import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;

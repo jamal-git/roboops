@@ -18,6 +18,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>roboops-framework-repo</id>
+            <url>https://raw.github.com/oopsjpeg/roboops-framework/mvn-repo/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -36,5 +40,10 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.8.0</version>
         </dependency>
+		<dependency>
+			<groupId>com.oopsjpeg</groupId>
+			<artifactId>roboops-framework</artifactId>
+			<version>0.0.1</version>
+		</dependency>
     </dependencies>
 </project>
