@@ -41,6 +41,7 @@ public class Roboops {
 			openMongo();
 			commands.setPrefix(prefix);
 			client = new ClientBuilder().withToken(token).build();
+			client.getDispatcher().registerListener(new Roboops());
 			client.getDispatcher().registerListener(commands);
 			client.login();
 		}
