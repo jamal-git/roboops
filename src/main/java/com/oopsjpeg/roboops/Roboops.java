@@ -39,6 +39,7 @@ public class Roboops {
 	public static void main(String[] args) {
 		if (loadConfig()) {
 			openMongo();
+			commands.setPrefix(prefix);
 			client = new ClientBuilder().withToken(token).build();
 			client.getDispatcher().registerListener(commands);
 			client.login();
