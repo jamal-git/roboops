@@ -1,7 +1,7 @@
 package com.oopsjpeg.roboops.commands;
 
 import com.oopsjpeg.roboops.Roboops;
-import com.oopsjpeg.roboops.framework.Emote;
+import com.oopsjpeg.roboops.framework.RoboopsEmote;
 import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.handle.obj.IChannel;
@@ -23,7 +23,7 @@ public class CleanCommand implements Command {
 		IUser bot = Roboops.getClient().getOurUser();
 
 		if (channel.isPrivate())
-			Util.sendMessage(channel, Emote.ERROR + "**" + author.getName() + "**, "
+			Util.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
 					+ "this command can only be done in servers.");
 		else {
 			MessageHistory history = channel.getMessageHistory(100);
@@ -40,7 +40,7 @@ public class CleanCommand implements Command {
 			// Delete the collected messages
 			channel.bulkDelete(messages);
 
-			Util.sendMessage(channel, Emote.SUCCESS + "**" + author.getName() + "** "
+			Util.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "** "
 					+ "cleared **" + Util.comma(messages.size()) + "** message(s).");
 		}
 	}

@@ -1,7 +1,7 @@
 package com.oopsjpeg.roboops.commands;
 
 import com.oopsjpeg.roboops.Roboops;
-import com.oopsjpeg.roboops.framework.Emote;
+import com.oopsjpeg.roboops.framework.RoboopsEmote;
 import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.storage.User;
 import com.oopsjpeg.roboops.util.Util;
@@ -16,7 +16,7 @@ public class BalanceCommand implements Command {
 		IUser author = message.getAuthor();
 		User info = Roboops.getUser(author);
 
-		Util.sendMessage(channel, Emote.MONEY + "**" + author.getName() + "**, "
+		Util.sendMessage(channel, RoboopsEmote.MONEY + "**" + author.getName() + "**, "
 				+ "you have **$" + Util.comma(info.getMoney()) + "**.");
 	}
 

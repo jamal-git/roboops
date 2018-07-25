@@ -1,7 +1,7 @@
 package com.oopsjpeg.roboops.commands;
 
 import com.oopsjpeg.roboops.Roboops;
-import com.oopsjpeg.roboops.framework.Emote;
+import com.oopsjpeg.roboops.framework.RoboopsEmote;
 import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.storage.User;
 import com.oopsjpeg.roboops.util.Util;
@@ -17,13 +17,13 @@ public class DailyCommand implements Command {
 		User info = Roboops.getUser(author);
 
 		if (!info.canDaily())
-			Util.sendMessage(channel, Emote.ERROR + "**" + author.getName() + "**, "
+			Util.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
 					+ "your daily bonus will be available in **" + info.dailyRemaining() + "**.");
 		else {
 			int daily = info.daily();
 			info.addMoney(daily);
 			Roboops.getMongo().saveUser(author);
-			Util.sendMessage(channel, Emote.SUCCESS + "**" + author.getName() + "** "
+			Util.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "** "
 					+ "has collected **$" + Util.comma(daily) + "** from their daily bonus!");
 		}
 
