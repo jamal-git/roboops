@@ -95,6 +95,10 @@ public class Roboops {
 		return client;
 	}
 
+	public static CommandCenter getCommands() {
+		return commands;
+	}
+
 	public static void buildCommands() {
 		commands.clear();
 		commands.add(new BalanceCommand());
