@@ -1,8 +1,8 @@
 package com.oopsjpeg.roboops.commands;
 
+import com.oopsjpeg.roboops.framework.Bufferer;
 import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.util.Leaderboard;
-import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
@@ -23,7 +23,7 @@ public class LeaderboardCommand implements Command {
 		else
 			embed = Leaderboard.getGlobal(Leaderboard.MOST_MONEY);
 
-		Util.sendMessage(channel, "Showing a leaderboard for **" + author.getName() + "**.", embed);
+		Bufferer.sendMessage(channel, "Showing a leaderboard for **" + author.getName() + "**.", embed);
 	}
 
 	@Override
