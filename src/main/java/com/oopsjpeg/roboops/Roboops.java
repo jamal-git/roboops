@@ -1,7 +1,6 @@
 package com.oopsjpeg.roboops;
 
 import com.oopsjpeg.roboops.commands.*;
-import com.oopsjpeg.roboops.framework.RoboopsTray;
 import com.oopsjpeg.roboops.framework.commands.CommandCenter;
 import com.oopsjpeg.roboops.storage.Guild;
 import com.oopsjpeg.roboops.storage.User;
@@ -34,8 +33,6 @@ public class Roboops {
 
 	private static String token;
 	private static String prefix;
-
-	private static RoboopsTray tray = new RoboopsTray("roboops");
 	private static MongoMaster mongo;
 	private static IDiscordClient client;
 
