@@ -19,9 +19,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -30,8 +28,8 @@ public class Roboops {
 	public static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(2);
 
 	private static final CommandCenter commands = new CommandCenter();
-	private static final List<UserWrapper> users = new ArrayList<>();
-	private static final List<GuildWrapper> guilds = new ArrayList<>();
+	private static final Map<Long, UserWrapper> users = new HashMap<>();
+	private static final Map<Long, GuildWrapper> guilds = new HashMap<>();
 
 	private static MongoMaster mongo;
 	private static IDiscordClient client;
@@ -155,22 +153,23 @@ public class Roboops {
 	}
 
 	public static List<UserWrapper> getUsers() {
-		return users;
+		return new ArrayList<>(users.values());
 	}
 
 	public static UserWrapper getUser(IUser user) {
-		if (!users.contains(user)) users.add(new UserWrapper(user));
-		return users.get(users.indexOf(user));
+		if (!users.containsKey(user.getLongID()))
+			users.put(user.getLongID(), new UserWrapper(user));
+		return users.get(user.getLongID());
 	}
 
 	public static List<GuildWrapper> getGuilds() {
-		return guilds;
+		return new ArrayList<>(guilds.values());
 	}
 
 	public static GuildWrapper getGuild(IGuild guild) {
-		if (!guilds.contains(guild))
-			guilds.add(new GuildWrapper(guild));
-		return guilds.get(guilds.indexOf(guild));
+		if (!guilds.containsKey(guild.getLongID()))
+			guilds.put(guild.getLongID(), new GuildWrapper(guild));
+		return guilds.get(guild.getLongID());
 	}
 
 	public static MongoMaster getMongo() {

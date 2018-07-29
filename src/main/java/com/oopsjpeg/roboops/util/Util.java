@@ -21,7 +21,7 @@ public class Util extends RoboopsUtil {
 
 	public static EmbedObject getProfile(UserWrapper info, IGuild guild) {
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.withAuthorIcon(info.getUser().getAvatar());
+		builder.withAuthorIcon(info.getUser().getAvatarURL());
 		builder.withAuthorName(info.getUser().getName());
 
 		if (info.getDesc() != null) builder.withDesc(info.getDesc());
