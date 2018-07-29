@@ -27,4 +27,11 @@ public class GuildWrapper {
 	public class Blacklist {
 
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj != null
+				&& ((obj instanceof GuildWrapper && ((GuildWrapper) obj).id == id)
+				|| (obj instanceof IGuild) && getGuild().equals(obj));
+	}
 }

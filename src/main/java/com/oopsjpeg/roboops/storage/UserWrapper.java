@@ -93,4 +93,11 @@ public class UserWrapper {
 	public void setGambling(boolean gambling) {
 		this.gambling = gambling;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj != null
+				&& ((obj instanceof UserWrapper && ((UserWrapper) obj).id == id)
+				|| (obj instanceof IUser) && getUser().equals(obj));
+	}
 }
