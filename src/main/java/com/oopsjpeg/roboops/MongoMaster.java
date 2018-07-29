@@ -5,17 +5,13 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-import com.oopsjpeg.roboops.storage.Guild;
-import com.oopsjpeg.roboops.storage.User;
+import com.oopsjpeg.roboops.storage.GuildWrapper;
+import com.oopsjpeg.roboops.storage.UserWrapper;
 import org.bson.Document;
-import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class MongoMaster extends MongoClient {
 	private final MongoDatabase database = getDatabase("roboops");
@@ -25,7 +21,7 @@ public class MongoMaster extends MongoClient {
 	public void loadUsers() {
 		Roboops.LOGGER.info("Loading user documents...");
 		for (Document d : users.find()) {
-			User u = inUser(d);
+			UserWrapper u = inUser(d);
 			if (u != null) Roboops.getUsers().add(inUser(d));
 		}
 		Roboops.LOGGER.info("Successfully loaded users.");
@@ -37,14 +33,10 @@ public class MongoMaster extends MongoClient {
 		Roboops.getUsers().add(inUser(d));
 	}
 
-	public void loadUser(User u) {
-		loadUser(u.getUser());
-	}
-
 	public void loadGuilds() {
 		Roboops.LOGGER.info("Loading guild documents...");
 		for (Document d : guilds.find()) {
-			Guild g = inGuild(d);
+			GuildWrapper g = inGuild(d);
 			if (g != null) Roboops.getGuilds().add(inGuild(d));
 		}
 		Roboops.LOGGER.info("Successfully loaded guilds.");
@@ -56,40 +48,28 @@ public class MongoMaster extends MongoClient {
 		Roboops.getGuilds().add(inGuild(d));
 	}
 
-	public void loadGuild(Guild g) {
-		loadGuild(g.getGuild());
-	}
-
 	public void saveUsers() {
 		Roboops.LOGGER.info("Saving user documents...");
-		for (User u : Roboops.getUsers()) saveUser(u);
+		for (UserWrapper u : Roboops.getUsers()) saveUser(u);
 		Roboops.LOGGER.info("Successfully saved users.");
 	}
 
-	public void saveUser(User u) {
+	public void saveUser(UserWrapper u) {
 		users.replaceOne(Filters.eq(u.getID()), outUser(u), new ReplaceOptions().upsert(true));
-	}
-
-	public void saveUser(IUser u) {
-		saveUser(Roboops.getUser(u));
 	}
 
 	public void saveGuilds() {
 		Roboops.LOGGER.info("Saving guild documents...");
-		for (Guild g : Roboops.getGuilds()) saveGuild(g);
+		for (GuildWrapper g : Roboops.getGuilds()) saveGuild(g);
 		Roboops.LOGGER.info("Successfully saved guilds.");
 	}
 
-	public void saveGuild(Guild g) {
+	public void saveGuild(GuildWrapper g) {
 		guilds.replaceOne(Filters.eq(g.getID()), outGuild(g), new ReplaceOptions().upsert(true));
 	}
 
-	public void saveGuild(IGuild g) {
-		saveGuild(Roboops.getGuild(g));
-	}
-
-	public User inUser(Document d) {
-		User u = new User(Roboops.getClient().getUserByID(d.getLong("_id")));
+	public UserWrapper inUser(Document d) {
+		UserWrapper u = new UserWrapper(Roboops.getClient().getUserByID(d.getLong("_id")));
 		if (d.containsKey("desc"))
 			u.setDesc(d.get("desc", ""));
 		if (d.containsKey("money"))
@@ -101,7 +81,7 @@ public class MongoMaster extends MongoClient {
 		return u;
 	}
 
-	public Document outUser(User u) {
+	public Document outUser(UserWrapper u) {
 		Document d = new Document("_id", u.getID());
 		if (u.getDesc() != null)
 			d.append("desc", u.getDesc());
@@ -112,21 +92,13 @@ public class MongoMaster extends MongoClient {
 		return d;
 	}
 
-	public Guild inGuild(Document d) {
-		Guild g = new Guild(Roboops.getClient().getGuildByID(d.getLong("_id")));
-		if (d.containsKey("blacklist_channels")) {
-			List<Long> ids = d.get("blacklist_channels", new ArrayList<>());
-			g.setBlacklistChannels(ids.stream()
-					.map(id -> Roboops.getClient().getChannelByID(id))
-					.collect(Collectors.toList()));
-		}
+	public GuildWrapper inGuild(Document d) {
+		GuildWrapper g = new GuildWrapper(Roboops.getClient().getGuildByID(d.getLong("_id")));
 		return g;
 	}
 
-	public Document outGuild(Guild g) {
+	public Document outGuild(GuildWrapper g) {
 		Document d = new Document("_id", g.getID());
-		d.append("blacklist_channels", g.getBlacklistChannels().stream()
-				.map(IChannel::getLongID).collect(Collectors.toList()));
 		return d;
 	}
 

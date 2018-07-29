@@ -1,5 +1,6 @@
 package com.oopsjpeg.roboops.commands;
 
+import com.oopsjpeg.roboops.Roboops;
 import com.oopsjpeg.roboops.framework.Bufferer;
 import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.util.Util;
@@ -13,7 +14,7 @@ public class ProfileCommand implements Command {
 		IChannel channel = message.getChannel();
 		IUser author = message.getAuthor();
 		Bufferer.sendMessage(channel, "Showing **" + author.getName() + "**'s profile.",
-				Util.getProfile(author, message.getGuild()));
+				Util.getProfile(Roboops.getUser(author), message.getGuild()));
 	}
 
 	@Override

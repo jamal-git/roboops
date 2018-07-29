@@ -4,7 +4,7 @@ import com.oopsjpeg.roboops.Roboops;
 import com.oopsjpeg.roboops.framework.Bufferer;
 import com.oopsjpeg.roboops.framework.RoboopsEmote;
 import com.oopsjpeg.roboops.framework.commands.Command;
-import com.oopsjpeg.roboops.storage.User;
+import com.oopsjpeg.roboops.storage.UserWrapper;
 import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -17,7 +17,7 @@ public class GambleCommand implements Command {
 	public void execute(IMessage message, String alias, String[] args) {
 		IChannel channel = message.getChannel();
 		IUser author = message.getAuthor();
-		User info = Roboops.getUser(author);
+		UserWrapper info = Roboops.getUser(author);
 
 		if (info.isGambling())
 			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
@@ -59,7 +59,7 @@ public class GambleCommand implements Command {
 										+ "rolled a(n) **" + roll + "** and earned **x3** their **$" + Util.comma(amount) + "**, "
 										+ "equaling **$" + Util.comma(amount * 3) + "**.");
 							}
-							Roboops.getMongo().saveUser(author);
+							Roboops.getMongo().saveUser(info);
 						}
 						info.setGambling(false);
 					}, 3, TimeUnit.SECONDS);
