@@ -100,11 +100,11 @@ public class Roboops {
 	private static void createConfig() {
 		LOGGER.info("Creating config...");
 
-		// False if unable to write file
-		if (!getConfigFile().canWrite())
-			LOGGER.error("Unable to write config.");
-		else {
-			try {
+		try {
+			// False if unable to write file
+			if (getConfigFile().exists() && !getConfigFile().canWrite())
+				LOGGER.error("Unable to write config.");
+			else {
 				// Open writer
 				FileWriter fw = new FileWriter(getConfigFile());
 
@@ -117,9 +117,9 @@ public class Roboops {
 				// Close writer
 				fw.close();
 				LOGGER.info("Created config, please setup 'config.ini'.");
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
