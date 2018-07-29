@@ -19,12 +19,12 @@ public class MongoMaster extends MongoClient {
 	private final MongoCollection<Document> guilds = database.getCollection("guilds");
 
 	public void loadUsers() {
-		Roboops.LOGGER.info("Loading user documents...");
+		Roboops.LOGGER.info("Loading users...");
 		for (Document d : users.find()) {
 			UserWrapper u = inUser(d);
 			if (u != null) Roboops.getUsers().add(inUser(d));
 		}
-		Roboops.LOGGER.info("Successfully loaded users.");
+		Roboops.LOGGER.info("Loaded users.");
 	}
 
 	public void loadUser(IUser u) {
@@ -34,12 +34,12 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public void loadGuilds() {
-		Roboops.LOGGER.info("Loading guild documents...");
+		Roboops.LOGGER.info("Loading guilds...");
 		for (Document d : guilds.find()) {
 			GuildWrapper g = inGuild(d);
 			if (g != null) Roboops.getGuilds().add(inGuild(d));
 		}
-		Roboops.LOGGER.info("Successfully loaded guilds.");
+		Roboops.LOGGER.info("Loaded guilds.");
 	}
 
 	public void loadGuild(IGuild g) {
@@ -49,9 +49,9 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public void saveUsers() {
-		Roboops.LOGGER.info("Saving user documents...");
+		Roboops.LOGGER.info("Saving users...");
 		for (UserWrapper u : Roboops.getUsers()) saveUser(u);
-		Roboops.LOGGER.info("Successfully saved users.");
+		Roboops.LOGGER.info("Saved users.");
 	}
 
 	public void saveUser(UserWrapper u) {
@@ -59,9 +59,9 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public void saveGuilds() {
-		Roboops.LOGGER.info("Saving guild documents...");
+		Roboops.LOGGER.info("Saving guilds...");
 		for (GuildWrapper g : Roboops.getGuilds()) saveGuild(g);
-		Roboops.LOGGER.info("Successfully saved guilds.");
+		Roboops.LOGGER.info("Saved guilds.");
 	}
 
 	public void saveGuild(GuildWrapper g) {
