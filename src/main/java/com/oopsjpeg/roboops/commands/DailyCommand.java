@@ -22,6 +22,7 @@ public class DailyCommand implements Command {
 					+ "your daily bonus will be available in **" + info.dailyRemaining() + "**.");
 		else {
 			int daily = info.daily();
+			Bufferer.deleteMessage(message);
 			info.addMoney(daily);
 			Roboops.getMongo().saveUser(info);
 			Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "** "

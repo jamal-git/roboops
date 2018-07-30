@@ -9,9 +9,12 @@ import com.oopsjpeg.roboops.storage.GuildWrapper;
 import com.oopsjpeg.roboops.storage.UserWrapper;
 import org.bson.Document;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class MongoMaster extends MongoClient {
 	private final MongoDatabase database = getDatabase("roboops");
@@ -94,11 +97,18 @@ public class MongoMaster extends MongoClient {
 
 	public GuildWrapper inGuild(Document d) {
 		GuildWrapper g = new GuildWrapper(Roboops.getClient().getGuildByID(d.getLong("_id")));
+		if (d.containsKey("self_roles"))
+			g.setSelfRoles(((ArrayList<Long>) d.get("self_roles")).stream()
+					.map(l -> Roboops.getClient().getRoleByID(l))
+					.collect(Collectors.toList()));
 		return g;
 	}
 
 	public Document outGuild(GuildWrapper g) {
 		Document d = new Document("_id", g.getID());
+		d.append("self_roles", g.getSelfRoles().stream()
+				.map(IRole::getLongID)
+				.collect(Collectors.toList()));
 		return d;
 	}
 

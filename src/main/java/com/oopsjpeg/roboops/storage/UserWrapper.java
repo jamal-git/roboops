@@ -98,6 +98,6 @@ public class UserWrapper {
 	public boolean equals(Object obj) {
 		return obj != null
 				&& ((obj instanceof UserWrapper && ((UserWrapper) obj).id == id)
-				|| (obj instanceof IUser) && getUser().equals(obj));
+				|| (obj instanceof IUser) && id == ((IUser) obj).getLongID());
 	}
 }

@@ -21,6 +21,7 @@ public class DescCommand implements Command {
 					+ "the correct syntax is: `" + Roboops.getPrefix() + "desc <description>`");
 		else if (args[0].equalsIgnoreCase("/clear")) {
 			info.setDesc("");
+			Bufferer.deleteMessage(message);
 			Roboops.getMongo().saveUser(info);
 			Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "**, "
 					+ "your description has been cleared.");
@@ -28,6 +29,7 @@ public class DescCommand implements Command {
 			String desc = String.join(" ", args).trim();
 			desc = desc.substring(0, Math.min(desc.length(), 250));
 			info.setDesc(desc);
+			Bufferer.deleteMessage(message);
 			Roboops.getMongo().saveUser(info);
 			Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "**, "
 					+ "your description has been updated.");

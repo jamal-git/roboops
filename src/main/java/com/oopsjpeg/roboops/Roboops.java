@@ -2,6 +2,7 @@ package com.oopsjpeg.roboops;
 
 import com.mongodb.MongoException;
 import com.oopsjpeg.roboops.commands.*;
+import com.oopsjpeg.roboops.commands.sars.*;
 import com.oopsjpeg.roboops.framework.commands.CommandCenter;
 import com.oopsjpeg.roboops.storage.GuildWrapper;
 import com.oopsjpeg.roboops.storage.UserWrapper;
@@ -141,6 +142,7 @@ public class Roboops {
 
 	private static void buildCommands() {
 		commands.clear();
+
 		commands.add(new BalanceCommand());
 		commands.add(new CleanCommand());
 		commands.add(new DailyCommand());
@@ -148,6 +150,12 @@ public class Roboops {
 		commands.add(new GambleCommand());
 		commands.add(new LeaderboardCommand());
 		commands.add(new ProfileCommand());
+
+		commands.add(new AddSARCommand());
+		commands.add(new ClearSARCommand());
+		commands.add(new ListSARCommand());
+		commands.add(new RemoveSARCommand());
+		commands.add(new RoleCommand());
 	}
 
 	public static CommandCenter getCommands() {

@@ -35,6 +35,7 @@ public class GambleCommand implements Command {
 					Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
 							+ "you do not have **$" + Util.comma(amount) + "**.");
 				else {
+					Bufferer.deleteMessage(message);
 					info.setGambling(true);
 					IMessage gamble = Bufferer.sendMessage(channel, RoboopsEmote.DICE + "**" + author.getName() + "** "
 							+ "is gambling **$" + Util.comma(amount) + "**...!");
