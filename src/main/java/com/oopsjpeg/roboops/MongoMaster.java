@@ -25,7 +25,7 @@ public class MongoMaster extends MongoClient {
 		Roboops.LOGGER.info("Loading users...");
 		for (Document d : users.find()) {
 			UserWrapper u = inUser(d);
-			if (u != null) Roboops.getUsers().add(inUser(d));
+			if (u != null) Roboops.getUsers().add(u);
 		}
 		Roboops.LOGGER.info("Loaded users.");
 	}
@@ -40,7 +40,7 @@ public class MongoMaster extends MongoClient {
 		Roboops.LOGGER.info("Loading guilds...");
 		for (Document d : guilds.find()) {
 			GuildWrapper g = inGuild(d);
-			if (g != null) Roboops.getGuilds().add(inGuild(d));
+			if (g != null) Roboops.getGuilds().add(g);
 		}
 		Roboops.LOGGER.info("Loaded guilds.");
 	}
@@ -72,16 +72,20 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public UserWrapper inUser(Document d) {
-		UserWrapper u = new UserWrapper(Roboops.getClient().getUserByID(d.getLong("_id")));
-		if (d.containsKey("desc"))
-			u.setDesc(d.get("desc", ""));
-		if (d.containsKey("money"))
-			u.setMoney(d.get("money", 0));
-		if (d.containsKey("most_money"))
-			u.setMostMoney(d.get("most_money", 0));
-		if (d.containsKey("last_daily"))
-			u.setLastDaily(LocalDateTime.parse(d.get("last_daily", "")));
-		return u;
+		IUser user = Roboops.getClient().getUserByID(d.getLong("_id"));
+		if (user != null) {
+			UserWrapper u = new UserWrapper(user);
+			if (d.containsKey("desc"))
+				u.setDesc(d.getString("desc"));
+			if (d.containsKey("money"))
+				u.setMoney(d.getInteger("money"));
+			if (d.containsKey("most_money"))
+				u.setMostMoney(d.getInteger("most_money"));
+			if (d.containsKey("last_daily"))
+				u.setLastDaily(LocalDateTime.parse(d.getString("last_daily")));
+			return u;
+		}
+		return null;
 	}
 
 	public Document outUser(UserWrapper u) {
@@ -96,12 +100,16 @@ public class MongoMaster extends MongoClient {
 	}
 
 	public GuildWrapper inGuild(Document d) {
-		GuildWrapper g = new GuildWrapper(Roboops.getClient().getGuildByID(d.getLong("_id")));
-		if (d.containsKey("self_roles"))
-			g.setSelfRoles(((ArrayList<Long>) d.get("self_roles")).stream()
-					.map(l -> Roboops.getClient().getRoleByID(l))
-					.collect(Collectors.toList()));
-		return g;
+		IGuild guild = Roboops.getClient().getGuildByID(d.getLong("_id"));
+		if (guild != null) {
+			GuildWrapper g = new GuildWrapper(guild);
+			if (d.containsKey("self_roles"))
+				g.setSelfRoles(((ArrayList<Long>) d.get("self_roles")).stream()
+						.map(l -> Roboops.getClient().getRoleByID(l))
+						.collect(Collectors.toList()));
+			return g;
+		}
+		return null;
 	}
 
 	public Document outGuild(GuildWrapper g) {
