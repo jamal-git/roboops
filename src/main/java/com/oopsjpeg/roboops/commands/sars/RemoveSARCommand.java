@@ -16,24 +16,29 @@ public class RemoveSARCommand implements Command {
 		IChannel channel = message.getChannel();
 		IUser author = message.getAuthor();
 
-		GuildWrapper info = Roboops.getGuild(guild);
-		String query = String.join(" ", args);
-		IRole role = guild.getRoles().stream()
-				.filter(r -> r.getName().toLowerCase().contains(query.toLowerCase()))
-				.findAny().orElse(null);
-
-		if (role == null)
+		if (args.length == 0)
 			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
-					+ "that role does not exist.");
-		else if (!info.getSelfRoles().contains(role))
-			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
-					+ "that role is not self-assignable.");
+					+ "the correct syntax is: `" + Roboops.getPrefix() + "removesar <name>`");
 		else {
-			Bufferer.deleteMessage(message);
-			info.getSelfRoles().remove(role);
-			Roboops.getMongo().saveGuild(info);
-			Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "** "
-					+ "removed **" + role.getName() + "** from the self-assignable roles.");
+			GuildWrapper info = Roboops.getGuild(guild);
+			String query = String.join(" ", args);
+			IRole role = guild.getRoles().stream()
+					.filter(r -> r.getName().toLowerCase().contains(query.toLowerCase()))
+					.findAny().orElse(null);
+
+			if (role == null)
+				Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
+						+ "that role does not exist.");
+			else if (!info.getSelfRoles().contains(role))
+				Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
+						+ "that role is not self-assignable.");
+			else {
+				Bufferer.deleteMessage(message);
+				info.getSelfRoles().remove(role);
+				Roboops.getMongo().saveGuild(info);
+				Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "** "
+						+ "removed **" + role.getName() + "** from the self-assignable roles.");
+			}
 		}
 	}
 

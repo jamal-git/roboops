@@ -13,31 +13,36 @@ public class RoleCommand implements Command {
 		IGuild guild = message.getGuild();
 		IChannel channel = message.getChannel();
 		IUser author = message.getAuthor();
-		GuildWrapper info = Roboops.getGuild(message.getGuild());
 
-		String query = String.join(" ", args);
-		IRole role = guild.getRoles().stream()
-				.filter(r -> r.getName().toLowerCase().contains(query.toLowerCase()))
-				.findAny().orElse(null);
-
-		if (role == null)
+		if (args.length == 0)
 			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
-					+ "that role does not exist.");
-		else if (!info.getSelfRoles().contains(role))
-			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
-					+ "that role is not self-assignable.");
+					+ "the correct syntax is: `" + Roboops.getPrefix() + "role <name>`");
 		else {
-			Bufferer.deleteMessage(message);
-			if (!author.getRolesForGuild(guild).contains(role)) {
-				author.addRole(role);
-				Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "**, "
-						+ "you now have **" + role.getName() + "**.");
-			} else {
-				author.removeRole(role);
-				Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "**, "
-						+ "you no longer have **" + role.getName() + "**.");
+			GuildWrapper info = Roboops.getGuild(message.getGuild());
+			String query = String.join(" ", args);
+			IRole role = guild.getRoles().stream()
+					.filter(r -> r.getName().toLowerCase().contains(query.toLowerCase()))
+					.findAny().orElse(null);
+
+			if (role == null)
+				Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
+						+ "that role does not exist.");
+			else if (!info.getSelfRoles().contains(role))
+				Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
+						+ "that role is not self-assignable.");
+			else {
+				Bufferer.deleteMessage(message);
+				if (!author.getRolesForGuild(guild).contains(role)) {
+					author.addRole(role);
+					Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "**, "
+							+ "you now have **" + role.getName() + "**.");
+				} else {
+					author.removeRole(role);
+					Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "**, "
+							+ "you no longer have **" + role.getName() + "**.");
+				}
+				Roboops.getMongo().saveUser(Roboops.getUser(author));
 			}
-			Roboops.getMongo().saveUser(Roboops.getUser(author));
 		}
 	}
 
