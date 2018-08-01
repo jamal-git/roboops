@@ -18,7 +18,7 @@ public class DescCommand implements Command {
 
 		if (args.length == 0)
 			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
-					+ "the correct syntax is: `" + Roboops.getPrefix() + "desc <description>`");
+					+ "the correct syntax is: `" + Roboops.getPrefix() + "description <desc>`");
 		else if (args[0].equalsIgnoreCase("/clear")) {
 			info.setDesc("");
 			Bufferer.deleteMessage(message);
