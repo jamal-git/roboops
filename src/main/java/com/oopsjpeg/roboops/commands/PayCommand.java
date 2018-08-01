@@ -7,6 +7,7 @@ import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.storage.UserWrapper;
 import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
@@ -35,8 +36,9 @@ public class PayCommand implements Command {
 					Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
 							+ "you do not have **$" + Util.comma(amount) + "**.");
 				else {
+					IGuild guild = message.getGuild();
 					IUser target = Util.findUser(message.getClient(), Arrays.copyOfRange(args, 1, args.length));
-					if (target == null)
+					if (target == null || !guild.getUsers().contains(target))
 						Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
 								+ "I couldn't find that user.");
 					else {
@@ -47,7 +49,7 @@ public class PayCommand implements Command {
 						Roboops.getMongo().saveUser(info);
 						Roboops.getMongo().saveUser(targetInfo);
 						Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "** "
-								+ "donated **" + target.getName() + " to **$" + amount + "**.");
+								+ "donated **$" + amount + "** to **" + target.getName() + "**.");
 					}
 				}
 			} catch (NumberFormatException e) {
