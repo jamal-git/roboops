@@ -37,6 +37,7 @@ public class GambleCommand implements Command {
 				else {
 					Bufferer.deleteMessage(message);
 					info.setGambling(true);
+					info.subMoney(amount);
 					IMessage gamble = Bufferer.sendMessage(channel, RoboopsEmote.DICE + "**" + author.getName() + "** "
 							+ "is gambling **$" + Util.comma(amount) + "**...!");
 					Roboops.SCHEDULER.schedule(() -> {
@@ -46,7 +47,6 @@ public class GambleCommand implements Command {
 									+ "rolled a(n) **" + roll + "** and kept their **$" + Util.comma(amount) + "**.");
 						else {
 							if (roll < 55) {
-								info.subMoney(amount);
 								Bufferer.editMessage(gamble, RoboopsEmote.DICE + "**" + author.getName() + "** "
 										+ "rolled a(n) **" + roll + "** and lost their **$" + Util.comma(amount) + "**.");
 							} else if (roll < 96) {
