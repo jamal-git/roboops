@@ -149,6 +149,7 @@ public class Roboops {
 		commands.add(new DescCommand());
 		commands.add(new GambleCommand());
 		commands.add(new LeaderboardCommand());
+		commands.add(new PayCommand());
 		commands.add(new ProfileCommand());
 
 		commands.add(new AddSARCommand());

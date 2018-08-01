@@ -22,6 +22,9 @@ public class GambleCommand implements Command {
 		if (info.isGambling())
 			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
 					+ "you are already gambling.");
+		else if (info.getMoney() <= 0)
+			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
+					+ "you do not have any money.");
 		else if (args.length == 0)
 			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
 					+ "the correct syntax is: `" + Roboops.getPrefix() + "gamble <amount>`");
