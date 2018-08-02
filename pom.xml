@@ -79,7 +79,7 @@
 		<dependency>
 			<groupId>com.oopsjpeg</groupId>
 			<artifactId>roboops-framework</artifactId>
-			<version>0.0.2</version>
+			<version>0.0.2.2</version>
 		</dependency>
     </dependencies>
 </project>

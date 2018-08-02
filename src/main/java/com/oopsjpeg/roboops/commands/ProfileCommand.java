@@ -10,11 +10,12 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class ProfileCommand implements Command {
 	@Override
-	public void execute(IMessage message, String alias, String[] args) {
+	public int execute(IMessage message, String alias, String[] args) {
 		IChannel channel = message.getChannel();
 		IUser author = message.getAuthor();
 		Bufferer.sendMessage(channel, "Showing **" + author.getName() + "**'s profile.",
 				Util.getProfile(Roboops.getUser(author), message.getGuild()));
+		return SUCCESS;
 	}
 
 	@Override
@@ -24,7 +25,12 @@ public class ProfileCommand implements Command {
 
 	@Override
 	public String getDesc() {
-		return "View your profile.";
+		return "View a profile.";
+	}
+
+	@Override
+	public String getUsage() {
+		return "[user]";
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.oopsjpeg.roboops.commands;
 
 import com.oopsjpeg.roboops.Roboops;
 import com.oopsjpeg.roboops.framework.Bufferer;
-import com.oopsjpeg.roboops.framework.RoboopsEmote;
+import com.oopsjpeg.roboops.framework.RoEmote;
 import com.oopsjpeg.roboops.framework.commands.Command;
 import com.oopsjpeg.roboops.util.Util;
 import sx.blah.discord.handle.obj.IChannel;
@@ -12,27 +12,27 @@ import sx.blah.discord.handle.obj.Permissions;
 import sx.blah.discord.util.MessageHistory;
 
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CleanCommand implements Command {
 	@Override
-	public void execute(IMessage message, String alias, String[] args) {
+	public int execute(IMessage message, String alias, String[] args) {
 		IChannel channel = message.getChannel();
 		IUser author = message.getAuthor();
 		IUser bot = Roboops.getClient().getOurUser();
 
 		if (channel.isPrivate())
-			Bufferer.sendMessage(channel, RoboopsEmote.ERROR + "**" + author.getName() + "**, "
+			Bufferer.sendMessage(channel, RoEmote.ERROR + "**" + author.getName() + "**, "
 					+ "this command can only be done in servers.");
 		else {
 			MessageHistory history = channel.getMessageHistory(100);
-			List<IMessage> messages = new LinkedList<>();
+
 			// Remove if sent by the bot
-			messages.addAll(history.stream()
+			List<IMessage> messages = history.stream()
 					.filter(m -> m.getAuthor().equals(bot))
-					.collect(Collectors.toList()));
+					.collect(Collectors.toList());
+
 			// Remove if message starts with prefix (if allowed)
 			if (channel.getModifiedPermissions(bot).contains(Permissions.MANAGE_MESSAGES)) {
 				messages.add(message);
@@ -40,12 +40,15 @@ public class CleanCommand implements Command {
 						.filter(m -> m.getContent().startsWith(Roboops.getPrefix()))
 						.collect(Collectors.toList()));
 			}
-			// Delete the collected messages
-			channel.bulkDelete(messages);
 
-			Bufferer.sendMessage(channel, RoboopsEmote.SUCCESS + "**" + author.getName() + "** "
+			if (messages.size() == 1) messages.get(0).delete();
+			else if (messages.size() > 1) channel.bulkDelete(messages);
+
+			Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "** "
 					+ "cleared **" + Util.comma(messages.size()) + "** message(s).");
 		}
+
+		return SUCCESS;
 	}
 
 	@Override
@@ -55,7 +58,12 @@ public class CleanCommand implements Command {
 
 	@Override
 	public String getDesc() {
-		return "Clean certain messages from the channel.";
+		return "Clean messages from the channel.";
+	}
+
+	@Override
+	public String[] getAliases() {
+		return new String[]{"clean"};
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.oopsjpeg.roboops.util;
 
-import com.oopsjpeg.roboops.framework.RoboopsUtil;
+import com.oopsjpeg.roboops.framework.RoUtil;
 import com.oopsjpeg.roboops.storage.UserWrapper;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IGuild;
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.Properties;
 import java.util.Random;
 
-public class Util extends RoboopsUtil {
+public class Util extends RoUtil {
 	private static final Random random = new Random();
 	private static final Properties defConfig = new Properties();
 

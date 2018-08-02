@@ -1,7 +1,7 @@
 package com.oopsjpeg.roboops.util;
 
 import com.oopsjpeg.roboops.Roboops;
-import com.oopsjpeg.roboops.framework.RoboopsEmote;
+import com.oopsjpeg.roboops.framework.RoEmote;
 import com.oopsjpeg.roboops.storage.UserWrapper;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IUser;
@@ -16,7 +16,7 @@ public class Leaderboard {
 		List<String> board = mode.get(users);
 
 		EmbedBuilder builder = new EmbedBuilder();
-		builder.appendField(RoboopsEmote.STAR2 + mode.getName() + " (" + scope + ")",
+		builder.appendField(RoEmote.STAR + mode.getName() + " (" + scope + ")",
 				String.join("\n", board), false);
 
 		return builder.build();

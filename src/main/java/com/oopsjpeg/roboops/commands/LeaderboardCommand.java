@@ -12,7 +12,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class LeaderboardCommand implements Command {
 	@Override
-	public void execute(IMessage message, String alias, String[] args) {
+	public int execute(IMessage message, String alias, String[] args) {
 		IGuild guild = message.getGuild();
 		IChannel channel = message.getChannel();
 		IUser author = message.getAuthor();
@@ -25,6 +25,8 @@ public class LeaderboardCommand implements Command {
 			embed = Leaderboard.get(Leaderboard.Mode.MOST_MONEY, "Global", Roboops.getUsers());
 
 		Bufferer.sendMessage(channel, "Showing a leaderboard for **" + author.getName() + "**.", embed);
+
+		return SUCCESS;
 	}
 
 	@Override
@@ -34,7 +36,12 @@ public class LeaderboardCommand implements Command {
 
 	@Override
 	public String getDesc() {
-		return "View the leaderboard.";
+		return "View a leaderboard.";
+	}
+
+	@Override
+	public String getUsage() {
+		return "[scope]";
 	}
 
 	@Override
