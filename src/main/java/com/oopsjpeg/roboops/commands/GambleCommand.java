@@ -37,7 +37,6 @@ public class GambleCommand implements Command {
 					Bufferer.sendMessage(channel, RoEmote.ERROR + "**" + author.getName() + "**, "
 							+ "you do not have **$" + Util.comma(amount) + "**.");
 				else {
-					Bufferer.deleteMessage(message);
 					info.setGambling(true);
 					info.takeMoney(amount);
 					IMessage gamble = Bufferer.sendMessage(channel, RoEmote.DICE + "**" + author.getName() + "** "

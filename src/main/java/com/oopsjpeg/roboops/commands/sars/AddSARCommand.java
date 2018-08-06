@@ -31,7 +31,6 @@ public class AddSARCommand implements Command {
 			Bufferer.sendMessage(channel, RoEmote.ERROR + "**" + author.getName() + "**, "
 					+ "that role is already self-assignable.");
 		else {
-			Bufferer.deleteMessage(message);
 			info.getSelfRoles().add(role);
 			Roboops.getMongo().saveGuild(info);
 			Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "** "

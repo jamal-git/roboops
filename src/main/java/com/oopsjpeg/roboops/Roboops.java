@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 public class Roboops {
 	public static final Logger LOGGER = LoggerFactory.getLogger(Roboops.class.getName());
@@ -199,5 +200,10 @@ public class Roboops {
 		buildCommands();
 		mongo.loadUsers();
 		mongo.loadGuilds();
+
+		System.out.println("https://discordapp.com/oauth2/authorize?client_id="
+				+ client.getApplicationClientID() + "&scope=bot");
+		System.out.println("Guilds: " + client.getGuilds().stream()
+				.map(IGuild::getName).collect(Collectors.joining(", ")));
 	}
 }

@@ -40,7 +40,6 @@ public class PayCommand implements Command {
 						Bufferer.sendMessage(channel, RoEmote.ERROR + "**" + author.getName() + "**, "
 								+ "I couldn't find that user.");
 					else {
-						Bufferer.deleteMessage(message);
 						UserWrapper targetInfo = Roboops.getUser(target);
 						info.takeMoney(amount);
 						targetInfo.giveMoney(amount);

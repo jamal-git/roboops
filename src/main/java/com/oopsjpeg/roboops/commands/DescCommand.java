@@ -20,19 +20,17 @@ public class DescCommand implements Command {
 
 		if (args[0].equalsIgnoreCase("/reset")) {
 			info.setDesc("");
-			Bufferer.deleteMessage(message);
-			Roboops.getMongo().saveUser(info);
 			Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "**, "
 					+ "your description has been reset.");
 		} else {
 			String desc = String.join(" ", args).trim();
 			desc = desc.substring(0, Math.min(desc.length(), 250));
 			info.setDesc(desc);
-			Bufferer.deleteMessage(message);
-			Roboops.getMongo().saveUser(info);
 			Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "**, "
 					+ "your description has been updated.");
 		}
+
+		Roboops.getMongo().saveUser(info);
 
 		return SUCCESS;
 	}

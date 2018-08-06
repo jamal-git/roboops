@@ -31,7 +31,6 @@ public class RemoveSARCommand implements Command {
 			Bufferer.sendMessage(channel, RoEmote.ERROR + "**" + author.getName() + "**, "
 					+ "that role is not self-assignable.");
 		else {
-			Bufferer.deleteMessage(message);
 			info.getSelfRoles().remove(role);
 			Roboops.getMongo().saveGuild(info);
 			Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "** "

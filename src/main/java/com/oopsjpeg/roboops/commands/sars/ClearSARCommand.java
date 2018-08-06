@@ -20,7 +20,6 @@ public class ClearSARCommand implements Command {
 			Bufferer.sendMessage(channel, RoEmote.ERROR + "**" + author.getName() + "**, "
 					+ "there are no self-assignable roles.");
 		else {
-			Bufferer.deleteMessage(message);
 			info.getSelfRoles().clear();
 			Roboops.getMongo().saveGuild(info);
 			Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "** "

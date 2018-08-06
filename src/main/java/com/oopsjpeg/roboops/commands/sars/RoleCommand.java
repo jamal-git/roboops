@@ -29,8 +29,7 @@ public class RoleCommand implements Command {
 			Bufferer.sendMessage(channel, RoEmote.ERROR + "**" + author.getName() + "**, "
 					+ "that role is not self-assignable.");
 		else {
-			Bufferer.deleteMessage(message);
-			if (!author.getRolesForGuild(guild).contains(role)) {
+			if (!author.getRolesForGuild(guild).contains(role) || alias.equalsIgnoreCase("iam")) {
 				author.addRole(role);
 				Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "**, "
 						+ "you now have **" + role.getName() + "**.");
@@ -53,5 +52,10 @@ public class RoleCommand implements Command {
 	@Override
 	public String getDesc() {
 		return "Toggles a self-assignable role.";
+	}
+
+	@Override
+	public String[] getAliases() {
+		return new String[]{"iam", "iamn"};
 	}
 }
