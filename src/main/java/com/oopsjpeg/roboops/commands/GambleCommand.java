@@ -39,27 +39,26 @@ public class GambleCommand implements Command {
 				else {
 					Bufferer.deleteMessage(message);
 					info.setGambling(true);
-					info.subMoney(amount);
+					info.takeMoney(amount);
 					IMessage gamble = Bufferer.sendMessage(channel, RoEmote.DICE + "**" + author.getName() + "** "
 							+ "is gambling **$" + Util.comma(amount) + "**!");
 
 					Roboops.SCHEDULER.schedule(() -> {
 						int roll = Util.randInt(100);
 						if (roll == 0) {
-							info.addMoney(amount);
+							info.giveMoney(amount);
 							Bufferer.editMessage(gamble, RoEmote.DICE + "**" + author.getName() + "** "
 									+ "rolled a(n) **" + roll + "** and kept their **$" + Util.comma(amount) + "**.");
 						} else if (roll < 55) {
-							info.subMoney(amount);
 							Bufferer.editMessage(gamble, RoEmote.DICE + "**" + author.getName() + "** "
 									+ "rolled a(n) **" + roll + "** and lost their **$" + Util.comma(amount) + "**.");
 						} else if (roll < 96) {
-							info.addMoney(amount * 2);
+							info.giveMoney(amount * 2);
 							Bufferer.editMessage(gamble, RoEmote.DICE + "**" + author.getName() + "** "
 									+ "rolled a(n) **" + roll + "** and earned **x2** their **$" + Util.comma(amount) + "**, "
 									+ "equaling **$" + Util.comma(amount * 2) + "**.");
 						} else {
-							info.addMoney(amount * 3);
+							info.giveMoney(amount * 3);
 							Bufferer.editMessage(gamble, RoEmote.DICE + "**" + author.getName() + "** "
 									+ "rolled a(n) **" + roll + "** and earned **x3** their **$" + Util.comma(amount) + "**, "
 									+ "equaling **$" + Util.comma(amount * 3) + "**.");

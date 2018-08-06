@@ -42,8 +42,8 @@ public class PayCommand implements Command {
 					else {
 						Bufferer.deleteMessage(message);
 						UserWrapper targetInfo = Roboops.getUser(target);
-						info.subMoney(amount);
-						targetInfo.addMoney(amount);
+						info.takeMoney(amount);
+						targetInfo.giveMoney(amount);
 						Roboops.getMongo().saveUser(info);
 						Roboops.getMongo().saveUser(targetInfo);
 						Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "** "

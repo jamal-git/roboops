@@ -48,11 +48,11 @@ public class UserWrapper {
 			mostMoney = this.money;
 	}
 
-	public void addMoney(int money) {
+	public void giveMoney(int money) {
 		setMoney(this.money + money);
 	}
 
-	public void subMoney(int money) {
+	public void takeMoney(int money) {
 		setMoney(this.money - money);
 	}
 

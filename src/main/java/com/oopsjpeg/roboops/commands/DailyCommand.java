@@ -23,7 +23,7 @@ public class DailyCommand implements Command {
 		else {
 			int daily = info.daily();
 			Bufferer.deleteMessage(message);
-			info.addMoney(daily);
+			info.giveMoney(daily);
 			Roboops.getMongo().saveUser(info);
 			Bufferer.sendMessage(channel, RoEmote.SUCCESS + "**" + author.getName() + "** "
 					+ "has collected **$" + Util.comma(daily) + "** from their daily bonus!");
